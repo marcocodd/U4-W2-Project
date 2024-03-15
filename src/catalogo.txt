@@ -1,0 +1,5 @@
+Book{author='Rowling', genre='Fantasy', isbn=123456789, title='Harry Potter', year=2000, totalPages=1500}
+Book{author='Aldo', genre='Comedy', isbn=987654321, title='Ciao', year=1950, totalPages=150}
+Magazine{periodicity=WEEKLY, isbn=555555555, title='Vogue', year=2000, totalPages=50}
+Magazine{periodicity=MONTHLY, isbn=333333333, title='Geographic', year=2005, totalPages=30}
+Magazine{periodicity=SEMIANNUAL, isbn=444444444, title='ProvaMagazine', year=2000, totalPages=150}

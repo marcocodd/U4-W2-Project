@@ -4,7 +4,11 @@ import marco.entities.Book;
 import marco.entities.CatalogElement;
 import marco.entities.Magazine;
 import marco.entities.Periodicity;
+import org.apache.commons.io.FileUtils;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,6 +43,18 @@ public class Archive {
         return catalogElements.stream().filter(element -> element instanceof Book).map(element -> element).filter(element -> ((Book) element).getAuthor().equals(author)).toList();
     }
 
+    public static void saveArchive() {
+        File savedArchive = new File("src/catalogo.txt");
+        try {
+            String catalogToString = catalogElements.stream().map(element -> element.toString()).collect(Collectors.joining(System.lineSeparator()));
+
+            FileUtils.writeStringToFile(savedArchive, catalogToString, StandardCharsets.UTF_8, false);
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+
     public static void main(String[] args) {
 
         // elementi per prova
@@ -54,18 +70,26 @@ public class Archive {
         Magazine magazine3 = new Magazine(444444444, "ProvaMagazine", 2000, 150, Periodicity.SEMIANNUAL);
         addElement(magazine3);
 
+        System.out.println("Catalogo:");
         catalogElements.forEach(element -> System.out.println(element));
+
+        // prova salvataggio file
+        saveArchive();
 
         removeElement(555555555);
-
+        System.out.println(" ");
+        System.out.println("Catalogo dopo rimozione");
         catalogElements.forEach(element -> System.out.println(element));
-
+        System.out.println(" ");
         System.out.println("Elemento trovato " + findElementIsbn(333333333));
 
         System.out.println("Elementi per anni" + searchByYear(2000));
 
         System.out.println("Ricerca per autore" + searchByAuthor("Rowling"));
+
         // -------------------------------
+
+
     }
 
 
