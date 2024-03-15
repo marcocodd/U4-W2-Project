@@ -26,7 +26,7 @@ public class Archive {
                 catalogElements.add(element);
             }
         } catch (IllegalArgumentException e) {
-            System.err.println("Errore nell'aggiunta dell'elemento, " + e.getMessage());
+            System.out.println("Errore nell'aggiunta dell'elemento, " + e.getMessage());
         }
 
 
@@ -37,18 +37,20 @@ public class Archive {
             if (catalogElements.stream().noneMatch(element -> element.getIsbn() == isbn)) {
                 throw new IllegalArgumentException("Nessun Elemento trovato");
             } else {
-                CatalogElement removedElement = catalogElements.stream().filter(element -> element.getIsbn() == isbn).findFirst().orElse(null);
+                CatalogElement removedElement = catalogElements.stream()
+                        .filter(element -> element.getIsbn() == isbn)
+                        .findFirst()
+                        .orElse(null);
                 System.out.println("Elemento rimosso: " + removedElement);
-                return catalogElements = catalogElements.stream().filter(element -> element.getIsbn() != isbn).toList();
-
+                return catalogElements = catalogElements.stream()
+                        .filter(element -> element.getIsbn() != isbn)
+                        .toList();
             }
-
         } catch (IllegalArgumentException e) {
-            System.err.println("Errore nella rimozione " + e.getMessage());
+            System.out.println(("Errore nella rimozione: " + e.getMessage()));
         }
 
-
-        return null;
+        return catalogElements;
     }
 
     public static String findElementIsbn(long isbn) {
@@ -71,10 +73,19 @@ public class Archive {
     }
 
     public static List<CatalogElement> searchByYear(int year) {
+        List<CatalogElement> elementsByYear;
+        try {
+            if (year <= 0 || year < 500) {
+                throw new IllegalArgumentException("Anno inserito non valido");
+            } else {
+                elementsByYear = catalogElements.stream().filter(element -> element.getYear() == year).toList();
+                return elementsByYear;
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
 
-
-        return catalogElements.stream().filter(element -> element.getYear() == year).toList();
-
+        }
+        return new ArrayList<>();
     }
 
     public static List<CatalogElement> searchByAuthor(String author) {
@@ -135,9 +146,11 @@ public class Archive {
         loadArchive();
 
         // rimozione elemento
+        System.out.println(" ");
         removeElement(555555555);
         //rimozione elemento non esistente prova errore
-        removeElement(55);
+        removeElement(1);
+
 
         System.out.println(" ");
         System.out.println("Catalogo dopo rimozione");
@@ -150,6 +163,7 @@ public class Archive {
         //ricerca tramite anno
         System.out.println(" ");
         System.out.println("Elementi per anni" + searchByYear(2000));
+        System.out.println(searchByYear(1));
 
         //ricerca tramite autore
         System.out.println(" ");
