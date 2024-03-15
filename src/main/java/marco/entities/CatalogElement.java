@@ -1,5 +1,7 @@
 package marco.entities;
 
+import java.util.Objects;
+
 public abstract class CatalogElement {
 
     protected long isbn;
@@ -29,4 +31,25 @@ public abstract class CatalogElement {
     public int getTotalPages() {
         return totalPages;
     }
+
+
+    @Override
+    public String toString() {
+        return "CatalogElement{" +
+                "isbn=" + isbn +
+                ", title='" + title + '\'' +
+                ", year=" + year +
+                ", totalPages=" + totalPages +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CatalogElement that = (CatalogElement) o;
+        return isbn == that.isbn && year == that.year && totalPages == that.totalPages && Objects.equals(title, that.title);
+    }
+
+
 }

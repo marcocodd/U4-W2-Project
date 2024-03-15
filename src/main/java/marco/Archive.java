@@ -18,22 +18,60 @@ public class Archive {
     private static List<CatalogElement> catalogElements = new ArrayList<>();
 
     public static void addElement(CatalogElement element) {
-        catalogElements.add(element);
+        try {
+            if (catalogElements.contains(element)) {
+                throw new IllegalArgumentException("Elemento già presente " + "isbn " + element.getIsbn());
+
+            } else {
+                catalogElements.add(element);
+            }
+        } catch (IllegalArgumentException e) {
+            System.err.println("Errore nell'aggiunta dell'elemento, " + e.getMessage());
+        }
+
 
     }
 
     public static List<CatalogElement> removeElement(long isbn) {
-        return catalogElements = catalogElements.stream().filter(element -> element.getIsbn() != isbn).toList();
+        try {
+            if (catalogElements.stream().noneMatch(element -> element.getIsbn() == isbn)) {
+                throw new IllegalArgumentException("Nessun Elemento trovato");
+            } else {
+                CatalogElement removedElement = catalogElements.stream().filter(element -> element.getIsbn() == isbn).findFirst().orElse(null);
+                System.out.println("Elemento rimosso: " + removedElement);
+                return catalogElements = catalogElements.stream().filter(element -> element.getIsbn() != isbn).toList();
 
+            }
+
+        } catch (IllegalArgumentException e) {
+            System.err.println("Errore nella rimozione " + e.getMessage());
+        }
+
+
+        return null;
     }
 
     public static String findElementIsbn(long isbn) {
-        String foundElement;
-        foundElement = catalogElements.stream().filter(element -> element.getIsbn() == isbn).collect(Collectors.toList()).toString();
-        return foundElement;
+        try {
+            if (catalogElements.stream().noneMatch(element -> element.getIsbn() == isbn)) {
+                throw new IllegalArgumentException("Nessun elemento trovato");
+            } else {
+                String foundElement = catalogElements.stream()
+                        .filter(element -> element.getIsbn() == isbn)
+                        .collect(Collectors.toList())
+                        .toString();
+
+                return foundElement;
+            }
+        } catch (IllegalArgumentException e) {
+            System.err.println("Errore nella ricerca: " + e.getMessage());
+        }
+
+        return null;
     }
 
     public static List<CatalogElement> searchByYear(int year) {
+
 
         return catalogElements.stream().filter(element -> element.getYear() == year).toList();
 
@@ -49,6 +87,7 @@ public class Archive {
             String catalogToString = catalogElements.stream().map(element -> element.toString()).collect(Collectors.joining(System.lineSeparator()));
 
             FileUtils.writeStringToFile(savedArchive, catalogToString, StandardCharsets.UTF_8, false);
+            System.out.println("File salvato");
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
@@ -79,23 +118,41 @@ public class Archive {
         addElement(magazine2);
         Magazine magazine3 = new Magazine(444444444, "ProvaMagazine", 2000, 150, Periodicity.SEMIANNUAL);
         addElement(magazine3);
+        //prova di aggiungere un oggetto già presente con lo stesso isbn
+        Magazine magazine4 = new Magazine(444444444, "ProvaMagazine", 2000, 150, Periodicity.SEMIANNUAL);
+        addElement(magazine4);
 
         System.out.println("Catalogo:");
         catalogElements.forEach(element -> System.out.println(element));
 
         // prova salvataggio file
+        System.out.println(" ");
         saveArchive();
+
+
         // prova caricamento file
+        System.out.println(" ");
         loadArchive();
+
+        // rimozione elemento
         removeElement(555555555);
+        //rimozione elemento non esistente prova errore
+        removeElement(55);
+
         System.out.println(" ");
         System.out.println("Catalogo dopo rimozione");
         catalogElements.forEach(element -> System.out.println(element));
         System.out.println(" ");
+        //ricerca elemento tramite isbn
+        System.out.println(" ");
         System.out.println("Elemento trovato " + findElementIsbn(333333333));
 
+        //ricerca tramite anno
+        System.out.println(" ");
         System.out.println("Elementi per anni" + searchByYear(2000));
 
+        //ricerca tramite autore
+        System.out.println(" ");
         System.out.println("Ricerca per autore" + searchByAuthor("Rowling"));
 
         // -------------------------------

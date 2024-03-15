@@ -22,4 +22,15 @@ public class Magazine extends CatalogElement {
                 ", totalPages=" + totalPages +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Magazine magazine = (Magazine) o;
+        return periodicity == magazine.periodicity;
+    }
+
+
 }

@@ -1,5 +1,7 @@
 package marco.entities;
 
+import java.util.Objects;
+
 public class Book extends CatalogElement {
 
     private String author;
@@ -20,6 +22,7 @@ public class Book extends CatalogElement {
         return genre;
     }
 
+
     @Override
     public String toString() {
         return "Book{" +
@@ -31,4 +34,15 @@ public class Book extends CatalogElement {
                 ", totalPages=" + totalPages +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Book book = (Book) o;
+        return Objects.equals(author, book.author) && Objects.equals(genre, book.genre);
+    }
+
+  
 }
