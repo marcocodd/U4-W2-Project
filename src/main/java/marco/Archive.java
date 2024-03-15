@@ -34,6 +34,7 @@ public class Archive {
 
     public static List<CatalogElement> removeElement(long isbn) {
         try {
+            // controllo che l'elemento ci sia altrimenti lancia exception
             if (catalogElements.stream().noneMatch(element -> element.getIsbn() == isbn)) {
                 throw new IllegalArgumentException("Nessun Elemento trovato");
             } else {
