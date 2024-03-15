@@ -92,7 +92,7 @@ public class Archive {
     }
 
     public static List<CatalogElement> searchByAuthor(String author) {
-        return catalogElements.stream().filter(element -> element instanceof Book).map(element -> element).filter(element -> ((Book) element).getAuthor().equals(author)).toList();
+        return catalogElements.stream().filter(element -> element instanceof Book).filter(element -> ((Book) element).getAuthor().equals(author)).toList();
     }
 
     public static void saveArchive() {
