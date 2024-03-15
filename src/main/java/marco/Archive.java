@@ -1,42 +1,58 @@
 package marco;
 
-import com.github.javafaker.Faker;
-import com.mifmif.common.regex.Main;
 import marco.entities.Book;
 import marco.entities.CatalogElement;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import marco.entities.Magazine;
+import marco.entities.Periodicity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.function.Supplier;
-
+import java.util.stream.Collectors;
 
 public class Archive {
-    private static Logger logger = LoggerFactory.getLogger(Main.class);
+
+    private static List<CatalogElement> catalogElements = new ArrayList<>();
+
+    public static void addElement(CatalogElement element) {
+        catalogElements.add(element);
+
+    }
+
+    public static List<CatalogElement> removeElement(long isbn) {
+        return catalogElements = catalogElements.stream().filter(element -> element.getIsbn() != isbn).toList();
+
+    }
+
+    public static String findElementIsbn(long isbn) {
+        String foundElement;
+        foundElement = catalogElements.stream().filter(element -> element.getIsbn() == isbn).collect(Collectors.toList()).toString();
+        return foundElement;
+    }
 
 
     public static void main(String[] args) {
 
-        // Supplier per generare libri casuali, lo uso solo per generare una lista per poi lavorarci
+        // elementi per prova
 
-        Supplier<Book> bookSupplier = () -> {
-            Faker faker = new Faker();
-            Random random = new Random();
+        Book book1 = new Book(123456789, "Harry Potter", 2000, 1500, "Rowling", "Fantasy");
+        addElement(book1);
+        Book book2 = new Book(987654321, "Ciao", 1950, 150, "Aldo", "Comedy");
+        addElement(book2);
+        Magazine magazine1 = new Magazine(555555555, "Vogue", 2000, 50, Periodicity.WEEKLY);
+        addElement(magazine1);
+        Magazine magazine2 = new Magazine(333333333, "Geographic", 2005, 30, Periodicity.MONTHLY);
+        addElement(magazine2);
+        catalogElements.forEach(element -> System.out.println(element));
 
-            return new Book(faker.book().hashCode(),
-                    faker.book().title(),
-                    random.nextInt(1900, 2024), random.nextInt(10, 250), faker.book().author(), faker.book().genre());
-        };
+        removeElement(555555555);
 
-        List<CatalogElement> catalog = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            catalog.add(bookSupplier.get());
-        }
+        catalogElements.forEach(element -> System.out.println(element));
 
-        catalog.forEach(System.out::println);
-        
+        System.out.println("Elemento trovato " + findElementIsbn(333333333));
 
+
+        // -------------------------------
     }
+
+
 }
