@@ -54,6 +54,16 @@ public class Archive {
         }
     }
 
+    public static void loadArchive() {
+        try {
+
+            String contentFile = FileUtils.readFileToString(FileUtils.getFile("src/catalogo.txt"), StandardCharsets.UTF_8);
+            System.out.println("archivio caricato:");
+            System.out.println(contentFile);
+        } catch (IOException e) {
+            System.err.println("Errore nel recuperare il file " + e.getMessage());
+        }
+    }
 
     public static void main(String[] args) {
 
@@ -75,7 +85,8 @@ public class Archive {
 
         // prova salvataggio file
         saveArchive();
-
+        // prova caricamento file
+        loadArchive();
         removeElement(555555555);
         System.out.println(" ");
         System.out.println("Catalogo dopo rimozione");
