@@ -55,6 +55,7 @@ public class Archive {
 
     public static String findElementIsbn(long isbn) {
         try {
+            // controllo che l'oggetto ci sia
             if (catalogElements.stream().noneMatch(element -> element.getIsbn() == isbn)) {
                 throw new IllegalArgumentException("Nessun elemento trovato");
             } else {
@@ -75,6 +76,7 @@ public class Archive {
     public static List<CatalogElement> searchByYear(int year) {
         List<CatalogElement> elementsByYear;
         try {
+            // controllo che l'anno sia valido, numeri un pò a caso...
             if (year <= 0 || year < 500) {
                 throw new IllegalArgumentException("Anno inserito non valido");
             } else {
